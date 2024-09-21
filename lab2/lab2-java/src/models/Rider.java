@@ -1,3 +1,6 @@
+package models;
+
+import enums.RideType;
 import strategies.PaymentStrategy;
 
 public class Rider extends User {

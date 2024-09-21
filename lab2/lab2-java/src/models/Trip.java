@@ -1,4 +1,9 @@
+package models;
+
 import java.util.UUID;
+
+import enums.RideType;
+import enums.TripStatus;
 
 public class Trip {
     private String id;

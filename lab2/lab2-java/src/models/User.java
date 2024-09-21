@@ -1,3 +1,7 @@
+package models;
+
+import interfaces.INotifiable;
+
 public abstract class User implements INotifiable {
     private String id;
     private String name;
