@@ -5,8 +5,9 @@ import initializers.MiniUberRider;
 public class App {
         public static void main(String[] args) throws Exception {
                 boolean session = true;
+                boolean loggedIn = false;
 
-                while (session) {
+                while (session && !loggedIn) {
                         System.out.println("Welcome to Mini Uber!");
                         System.out.println("1. Rider");
                         System.out.println("2. Driver");
@@ -18,15 +19,30 @@ public class App {
                         switch (choice) {
                                 case 1:
                                         MiniUberRider riderInterface = new MiniUberRider();
-                                        riderInterface.initialize();
+                                        loggedIn = riderInterface.initialize();
+
+                                        if (loggedIn) {
+                                                riderInterface.printMenu();
+                                        }
+
                                         break;
                                 case 2:
                                         MiniUberDriver driverInterface = new MiniUberDriver();
-                                        driverInterface.initialize();
+                                        loggedIn = driverInterface.initialize();
+
+                                        if (loggedIn) {
+                                                driverInterface.printMenu();
+                                        }
+
                                         break;
                                 case 3:
                                         MiniUberAdmin adminInterface = new MiniUberAdmin();
-                                        adminInterface.initialize();
+                                        loggedIn = adminInterface.initialize();
+
+                                        if (loggedIn) {
+                                                adminInterface.printMenu();
+                                        }
+
                                         break;
                                 case 4:
                                         session = false;
