@@ -1,26 +1,51 @@
 package helpers;
 
 import interfaces.IEncryption;
+import java.util.Scanner;
 
 public class Initializer {
-    public static int encryptionChoice() {
-        System.out.println("-------------------------------------------------------------------");
-        System.out.println("1. AES Encryption");
-        System.out.println("2. DES Encryption");
-        System.out.println("3. Caesar Encryption");
-        System.out.println("4. AES Decryption");
-        System.out.println("5. DES Decryption");
-        System.out.println("6. Caesar Decryption");
-        System.out.println("7. Exit");
-        System.out.println("-------------------------------------------------------------------");
-        System.out.print("\nChoose Operation: ");
+    private Scanner scanner;
 
-        int choice = Integer.parseInt(System.console().readLine());
+    private static final String RESET = "\u001B[0m";
+    private static final String RED = "\u001B[31m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String BLUE = "\u001B[34m";
+    private static final String YELLOW = "\u001B[33m";
+    private static final String CYAN = "\u001B[36m";
+    // private static final String WHITE_BG = "\u001B[47m";
+    // private static final String BLACK_TEXT = "\u001B[30m";
 
+    public Initializer() {
+        this.scanner = new Scanner(System.in);
+    }
+
+    // Method to print a colorful header
+    private void printHeader() {
+        System.out.println(CYAN + "*******************************************************************" + RESET);
+        System.out.println(CYAN + "*                         ENCRYPTION MENU                         *" + RESET);
+        System.out.println(CYAN + "*******************************************************************" + RESET);
+    }
+
+    // Method to print the operation choices with more styling
+    public int encryptionChoice() {
+        printHeader(); // Print the header
+        System.out.println(BLUE + "  1. AES Encryption" + RESET);
+        System.out.println(BLUE + "  2. DES Encryption" + RESET);
+        System.out.println(BLUE + "  3. Caesar Encryption" + RESET);
+        System.out.println(RED + "  4. AES Decryption" + RESET);
+        System.out.println(RED + "  5. DES Decryption" + RESET);
+        System.out.println(RED + "  6. Caesar Decryption" + RESET);
+        System.out.println(YELLOW + "  7. Exit" + RESET);
+        System.out.println(CYAN + "-------------------------------------------------------------------" + RESET);
+        System.out.print(GREEN + "\nChoose Operation: " + RESET);
+
+        int choice = Integer.parseInt(scanner.nextLine());
+        System.out.println(); // Add an empty line for spacing
         return choice;
     }
 
-    public static IEncryption initializEncryption(int choice) {
+    // Method to initialize the encryption based on the choice
+    public IEncryption initializeEncryption(int choice) {
         IEncryption encryption = null;
 
         switch (choice) {
