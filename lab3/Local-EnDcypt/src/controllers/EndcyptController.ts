@@ -15,12 +15,13 @@ class EncryptController {
 
     encrypt = async (req: any, res: any) => {
         try {
-            const { data, encryptionType } = req.body;
+            const { data, encryptionType, shiftKey } = req.body;
 
-            const response = await axios.post(`${JAVA_SERVER_URL}/encrypt`, {
-                data,
-                encryptionType
-            });
+            const payload = encryptionType.toLowerCase() === "ceasar"
+                ? { data, encryptionType, shiftKey }
+                : { data, encryptionType };
+
+            const response = await axios.post(`${JAVA_SERVER_URL}/encrypt`, payload);
 
             res.json({ encryptedData: response.data.encryptedData });
         } catch (error) {
@@ -31,12 +32,13 @@ class EncryptController {
 
     decrypt = async (req: any, res: any) => {
         try {
-            const { encryptedData, encryptionType } = req.body;
+            const { encryptedData, encryptionType, shiftKey } = req.body;
 
-            const response = await axios.post(`${JAVA_SERVER_URL}/decrypt`, {
-                encryptedData,
-                encryptionType
-            });
+            const payload = encryptionType.toLowerCase() === "ceasar"
+                ? { encryptedData, encryptionType, shiftKey }
+                : { encryptedData, encryptionType };
+
+            const response = await axios.post(`${JAVA_SERVER_URL}/decrypt`, payload);
 
             res.json({ decryptedData: response.data.decryptedData });
         } catch (error) {

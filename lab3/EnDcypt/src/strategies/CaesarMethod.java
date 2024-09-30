@@ -2,16 +2,19 @@ package strategies;
 
 import helpers.FileHandler;
 import interfaces.IEncryption;
-import java.util.Scanner;
 
 public class CaesarMethod implements IEncryption {
-    private static final Scanner scanner = new Scanner(System.in);
+    private int shiftKey;
+
+    public CaesarMethod(int shiftKey) {
+        if (shiftKey < 0 || shiftKey > 25) {
+            throw new IllegalArgumentException("Shift key must be between 0 and 25");
+        }
+        this.shiftKey = shiftKey;
+    }
 
     @Override
     public String encrypt(String data) {
-        System.out.print("Enter the shift key (0-25) : ");
-        int shiftKey = getValidShiftKey();
-
         StringBuilder result = new StringBuilder();
         for (char character : data.toCharArray()) {
             if (Character.isLetter(character)) {
@@ -28,9 +31,6 @@ public class CaesarMethod implements IEncryption {
 
     @Override
     public String decrypt(String encryptedData) {
-        System.out.print("Enter the shift key (0-25) : ");
-        int shiftKey = getValidShiftKey();
-
         StringBuilder result = new StringBuilder();
         for (char character : encryptedData.toCharArray()) {
             if (Character.isLetter(character)) {
@@ -43,21 +43,6 @@ public class CaesarMethod implements IEncryption {
         String decryptedData = result.toString();
         FileHandler.WriteFile("outputs/decryptResult.txt", decryptedData);
         return decryptedData;
-    }
-
-    private int getValidShiftKey() {
-        while (true) {
-            try {
-                int key = Integer.parseInt(scanner.nextLine().trim());
-                if (key >= 0 && key <= 25) {
-                    return key;
-                } else {
-                    System.out.print("Invalid input. Please enter a number between 0 and 25: ");
-                }
-            } catch (NumberFormatException e) {
-                System.out.print("Invalid input. Please enter a valid number: ");
-            }
-        }
     }
 
     @Override

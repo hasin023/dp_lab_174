@@ -14,16 +14,22 @@ public class EncryptHandler implements HttpHandler {
         if ("POST".equals(exchange.getRequestMethod())) {
             String requestBody = new String(exchange.getRequestBody().readAllBytes());
 
-            // Extract data and encryptionType from the request body
+            // Extract data, encryptionType, and shiftKey (if applicable) from the request
+            // body
             String[] parts = requestBody.split(",");
             String data = parts[0].split(":")[1].replace("\"", "").trim();
-            String encryptionType = parts[1].split(":")[1].replace("\"", "").replace("}", "").trim();
+            String encryptionType = parts[1].split(":")[1].replace("\"", "").trim();
+            Integer shiftKey = encryptionType.equalsIgnoreCase("ceasar")
+                    ? Integer.parseInt(parts[2].split(":")[1].replace("\"", "").replace("}", "").trim())
+                    : null;
 
-            // Set the encryption strategy based on the type
+            // Set the encryption strategy based on the type and shiftKey
             EncryptionContext context = new EncryptionContext();
-            context.setEncryptionStrategy(encryptionType);
+            context.setEncryptionStrategy(encryptionType, shiftKey);
 
             String encryptedData = context.encryptData(data);
+
+            System.out.println("Encrypted Data: " + encryptedData);
 
             // Respond to the client
             String response = "{\"encryptedData\":\"" + encryptedData + "\"}";

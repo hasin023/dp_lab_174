@@ -59,7 +59,8 @@ public class Initializer {
                 break;
             case 3:
             case 6:
-                encryption = new strategies.CaesarMethod();
+                int shiftKey = 2;
+                encryption = new strategies.CaesarMethod(shiftKey);
                 break;
             default:
                 break;

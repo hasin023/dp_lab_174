@@ -9,7 +9,7 @@ public class EncryptionContext {
     private IEncryption strategy;
 
     // Method to set the encryption strategy at runtime
-    public void setEncryptionStrategy(String encryptionType) {
+    public void setEncryptionStrategy(String encryptionType, Integer shiftKey) {
         switch (encryptionType.toLowerCase()) {
             case "aes":
                 this.strategy = new AESMethod();
@@ -17,8 +17,8 @@ public class EncryptionContext {
             case "des":
                 this.strategy = new DESMethod();
                 break;
-            case "cipher":
-                this.strategy = new CaesarMethod();
+            case "ceasar":
+                this.strategy = new CaesarMethod(shiftKey);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid encryption type");
