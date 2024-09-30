@@ -29,8 +29,6 @@ public class EncryptHandler implements HttpHandler {
 
             String encryptedData = context.encryptData(data);
 
-            System.out.println("Encrypted Data: " + encryptedData);
-
             // Respond to the client
             String response = "{\"encryptedData\":\"" + encryptedData + "\"}";
             exchange.sendResponseHeaders(200, response.getBytes().length);
