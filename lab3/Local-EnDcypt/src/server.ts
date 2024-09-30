@@ -23,6 +23,8 @@ app.get('/', (req: any, res: any) => {
 // Use Routes
 app.use('/', endcyptRouter);
 
+
+// Listen to the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

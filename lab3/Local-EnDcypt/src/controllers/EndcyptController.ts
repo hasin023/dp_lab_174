@@ -1,7 +1,9 @@
-const CryptoJS = require("crypto-js");
+const axios = require('axios');
+
+const JAVA_SERVER_URL = process.env.SERVER_URL;
+
 
 class EncryptController {
-    private readonly secretKey = "55VoicesInMyHead";
 
     renderEncrypt = async (req: any, res: any) => {
         res.json({ message: 'Rendering from encrypt' });
@@ -12,64 +14,37 @@ class EncryptController {
     };
 
     encrypt = async (req: any, res: any) => {
-        const { text, method } = req.body;
+        try {
+            const { data, encryptionType } = req.body;
 
-        if (!text) {
-            return res.status(400).json({ message: 'Text is required' });
-        }
-
-        if (!method) {
-            return res.status(400).json({ message: 'Method is required' });
-        }
-
-
-        if (method === 'AES') {
-            const encrypted = CryptoJS.AES.encrypt(text, this.secretKey).toString();
-            return res.json({
-                message: `Encrypting text via ${method} => ${text}`,
-                encryptedText: encrypted
+            const response = await axios.post(`${JAVA_SERVER_URL}/encrypt`, {
+                data,
+                encryptionType
             });
-        } else if (method === 'DES') {
-            const encrypted = CryptoJS.DES.encrypt(text, this.secretKey).toString();
-            return res.json({
-                message: `Encrypting text via ${method} => ${text}`,
-                encryptedText: encrypted
-            });
-        }
 
-        res.json({ message: `Keep your secrets safe <33` });
+            res.json({ encryptedData: response.data.encryptedData });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error during encryption');
+        }
     };
 
     decrypt = async (req: any, res: any) => {
-        const { text, method } = req.body;
+        try {
+            const { encryptedData, encryptionType } = req.body;
 
-        if (!text) {
-            return res.status(400).json({ message: 'Text is required' });
-        }
-
-        if (!method) {
-            return res.status(400).json({ message: 'Method is required' });
-        }
-
-
-        if (method === 'AES') {
-            const bytes = CryptoJS.AES.decrypt(text, this.secretKey);
-            const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-            return res.json({
-                message: `Decrypting text via ${method} => ${text}`,
-                decryptedText: decrypted
+            const response = await axios.post(`${JAVA_SERVER_URL}/decrypt`, {
+                encryptedData,
+                encryptionType
             });
-        } else if (method === 'DES') {
-            const bytes = CryptoJS.DES.decrypt(text, this.secretKey);
-            const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-            return res.json({
-                message: `Decrypting text via ${method} => ${text}`,
-                decryptedText: decrypted
-            });
-        }
 
-        res.json({ message: `Now we know your secrets :33` });
+            res.json({ decryptedData: response.data.decryptedData });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error during decryption');
+        }
     };
+
 }
 
 module.exports = new EncryptController();

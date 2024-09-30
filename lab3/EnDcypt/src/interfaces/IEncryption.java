@@ -2,9 +2,9 @@ package interfaces;
 
 public interface IEncryption {
 
-    public String encrypt(String text);
+    public String encrypt(String data);
 
-    public String decrypt(String text);
+    public String decrypt(String encryptedData);
 
     public String getEncryptionName();
 }
