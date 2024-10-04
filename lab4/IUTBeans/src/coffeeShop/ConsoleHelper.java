@@ -42,5 +42,6 @@ public class ConsoleHelper {
         System.out.println(YELLOW + "Order: " + RESET + description);
         System.out.printf(YELLOW + "Total price: " + RESET + "$%.2f%n", price);
         System.out.println(GREEN + "Thank you for your order!" + RESET);
+        System.out.println();
     }
 }

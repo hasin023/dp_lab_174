@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseCoffee implements ICoffee {
-    protected List<ICondiment> condiments = new ArrayList<>();
+    private List<ICondiment> condiments = new ArrayList<>();
 
     @Override
     public ICoffee add(ICondiment condiment) {
