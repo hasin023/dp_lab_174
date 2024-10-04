@@ -1,15 +1,15 @@
-package beverage;
+package beverage.concretes;
 
 import beverage.asbtracts.BaseCoffee;
 
-public class Espresso extends BaseCoffee {
+public class Latte extends BaseCoffee {
     @Override
     protected String getBaseName() {
-        return "Espresso";
+        return "Latte";
     }
 
     @Override
     protected double getBaseCost() {
-        return 1.99;
+        return 2.49;
     }
 }

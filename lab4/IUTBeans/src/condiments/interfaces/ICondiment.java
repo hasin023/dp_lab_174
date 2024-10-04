@@ -5,8 +5,4 @@ public interface ICondiment {
 
     double getCost();
 
-    ICondiment getNext();
-
-    void setNext(ICondiment condiment);
-
 }

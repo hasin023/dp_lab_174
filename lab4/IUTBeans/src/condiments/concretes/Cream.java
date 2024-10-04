@@ -1,12 +1,8 @@
-package condiments;
+package condiments.concretes;
 
-import condiments.abstracts.BaseCondiment;
 import condiments.interfaces.ICondiment;
 
-public class Cream extends BaseCondiment {
-    public Cream(ICondiment next) {
-        super(next);
-    }
+public class Cream implements ICondiment {
 
     @Override
     public String getDescription() {
