@@ -1,19 +1,25 @@
 package Concretes;
 
-import Abstracts.SimpleProduct;
+import Behaviours.IProduct;
 
-public class Laptop extends SimpleProduct {
+public class Laptop implements IProduct {
+    private String name;
+    private double price;
+    private String description;
+
     public Laptop(String name, double price, String description) {
-        super(name, price, description);
+        this.name = name;
+        this.price = price;
+        this.description = description;
     }
 
     @Override
     public void getDescription() {
-        System.out.println("Laptop");
+        System.out.println("Laptop: " + description);
     }
 
     @Override
     public double calculatePrice() {
-        return 3.00;
+        return price;
     }
 }

@@ -1,31 +1,17 @@
 package Concretes;
 
-import java.util.List;
-
 import Abstracts.CompositeProduct;
-import Abstracts.SimpleProduct;
 
 public class Bundle1 extends CompositeProduct {
-
     public Bundle1() {
-        super(List.of(new Laptop("Laptop", 3.49, "LaptopD"),
-                new Mouse("Mouse", 1.49, "MouseD")));
+        super();
+        addProduct(new Laptop("Laptop", 3.49, "High-performance laptop"));
+        addProduct(new Mouse("Mouse", 1.49, "Ergonomic mouse"));
     }
 
     @Override
     public void getDescription() {
-        for (SimpleProduct product : products) {
-            product.getDescription();
-        }
+        System.out.println("Bundle 1 contains:");
+        super.getDescription();
     }
-
-    @Override
-    public double calculatePrice() {
-        double price = 0;
-        for (SimpleProduct product : products) {
-            price += product.calculatePrice();
-        }
-        return price;
-    }
-
 }
