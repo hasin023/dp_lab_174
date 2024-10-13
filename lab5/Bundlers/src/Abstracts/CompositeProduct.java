@@ -6,10 +6,14 @@ import java.util.List;
 import Behaviours.IProduct;
 
 public abstract class CompositeProduct implements IProduct {
+    protected String name;
     protected List<IProduct> products;
+    protected double discountRate;
 
-    public CompositeProduct() {
+    public CompositeProduct(String name, double discountRate) {
+        this.name = name;
         this.products = new ArrayList<>();
+        this.discountRate = discountRate;
     }
 
     public void addProduct(IProduct product) {
@@ -21,16 +25,23 @@ public abstract class CompositeProduct implements IProduct {
     }
 
     @Override
-    public void getDescription() {
+    public void displayDetails() {
+        System.out.println("Bundle: " + name);
         for (IProduct product : products) {
-            product.getDescription();
+            product.displayDetails();
         }
     }
 
     @Override
     public double calculatePrice() {
-        return products.stream()
+        double totalPrice = products.stream()
                 .mapToDouble(IProduct::calculatePrice)
                 .sum();
+        return totalPrice * (1 - discountRate);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

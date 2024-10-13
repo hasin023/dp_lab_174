@@ -1,7 +1,9 @@
 package Behaviours;
 
 public interface IProduct {
-    void getDescription();
+    void displayDetails();
 
     double calculatePrice();
+
+    String getName();
 }

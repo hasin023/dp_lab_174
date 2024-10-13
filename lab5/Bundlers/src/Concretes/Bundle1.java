@@ -1,17 +1,20 @@
 package Concretes;
 
 import Abstracts.CompositeProduct;
+import Behaviours.IProduct;
 
 public class Bundle1 extends CompositeProduct {
     public Bundle1() {
-        super();
-        addProduct(new Laptop("Laptop", 3.49, "High-performance laptop"));
-        addProduct(new Mouse("Mouse", 1.49, "Ergonomic mouse"));
+        super("Bundle 1", 0.10);
+        addProduct(new Laptop("Laptop", 999.99, "High-performance laptop"));
+        addProduct(new Mouse("Mouse", 29.99, "Ergonomic mouse"));
     }
 
     @Override
-    public void getDescription() {
-        System.out.println("Bundle 1 contains:");
-        super.getDescription();
+    public void displayDetails() {
+        System.out.println("Special Bundle: " + getName());
+        for (IProduct product : products) {
+            product.displayDetails();
+        }
     }
 }

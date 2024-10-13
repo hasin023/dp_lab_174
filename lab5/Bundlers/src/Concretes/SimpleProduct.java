@@ -2,12 +2,12 @@ package Concretes;
 
 import Behaviours.IProduct;
 
-public class Mouse implements IProduct {
+public class SimpleProduct implements IProduct {
     private String name;
     private double price;
     private String description;
 
-    public Mouse(String name, double price, String description) {
+    public SimpleProduct(String name, double price, String description) {
         this.name = name;
         this.price = price;
         this.description = description;

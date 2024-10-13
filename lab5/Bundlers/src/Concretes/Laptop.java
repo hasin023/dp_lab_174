@@ -14,12 +14,17 @@ public class Laptop implements IProduct {
     }
 
     @Override
-    public void getDescription() {
-        System.out.println("Laptop: " + description);
+    public void displayDetails() {
+        System.out.println("  - " + name + ": $" + String.format("%.2f", price) + " - " + description);
     }
 
     @Override
     public double calculatePrice() {
         return price;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }
