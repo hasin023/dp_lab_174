@@ -54,30 +54,10 @@ document.addElement(boldText);
 document.addElement(complexText);
 ```
 
-## Deliverables
-1. Complete Java implementation of all required classes
-2. UML class diagram showing the relationship between components
-3. Test class demonstrating all major functionality
-4. Brief document explaining:
-   - How your implementation follows SOLID principles
-   - How the Composite and Decorator patterns interact
-   - How your design allows for future extensions
-
-## Evaluation Criteria
-- Correct implementation of both design patterns (30%)
-- Adherence to SOLID principles (25%)
-- Code quality and organization (20%)
-- Functionality and feature completeness (15%)
-- Documentation and explanation (10%)
-
 ## Bonus Challenges
 1. Add a new decorator for underlined text
 2. Implement a method to export the document in HTML format
 3. Add support for document statistics (word count, paragraph count, etc.)
-
-## Time Allocation
-- Suggested time: 1 week
-- Estimated effort: 8-10 hours
 
 ## Notes
 - Focus on design pattern implementation rather than complex formatting logic
