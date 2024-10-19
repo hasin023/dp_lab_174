@@ -1,3 +1,1 @@
-# Scenario
-
-QUIZ 1
+# Quiz 1 - Strategy + Template Robots
