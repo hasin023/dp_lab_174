@@ -6,10 +6,8 @@ public class App {
         WeatherServiceProxy weatherService = new WeatherServiceProxy();
 
         try {
-
             WeatherData data = weatherService.getWeatherData();
             data.printWeatherDetails();
-
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }

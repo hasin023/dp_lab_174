@@ -5,7 +5,6 @@ import java.util.Map;
 
 import behaviours.IWeatherService;
 import models.WeatherData;
-import thirdPartyServices.LocationService;
 import thirdPartyServices.OpenWeatherService;
 import thirdPartyServices.WeatherStackService;
 
@@ -15,7 +14,7 @@ public class WeatherServiceProxy {
     private IWeatherService weatherStackService;
     private Map<String, WeatherData> cache; // Location -> WeatherData
 
-    private final long CACHE_DURATION = 600000; // 10 minutes
+    // private final long CACHE_DURATION = 600000; // 10 minutes
 
     public WeatherServiceProxy() {
         this.openWeatherService = new OpenWeatherService();
@@ -45,9 +44,9 @@ public class WeatherServiceProxy {
         return data;
     }
 
-    private boolean isCacheValid(WeatherData data) {
-        return System.currentTimeMillis() - data.getTimestamp() < CACHE_DURATION;
-    }
+    // private boolean isCacheValid(WeatherData data) {
+    // return System.currentTimeMillis() - data.getTimestamp() < CACHE_DURATION;
+    // }
 
     public void resetCache() {
         System.out.println("Resetting cache...");

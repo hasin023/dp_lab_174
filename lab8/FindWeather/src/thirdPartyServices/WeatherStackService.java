@@ -28,8 +28,7 @@ public class WeatherStackService implements IWeatherService {
         HttpResponse<String> response = HttpClient.newHttpClient()
                 .send(request, HttpResponse.BodyHandlers.ofString());
 
-        String jsonBody = response.body();
-        System.out.println(jsonBody);
+        String jsonResponse = response.body();
 
         // {"request":{"type":"City","query":"Tongi,
         // Bangladesh","language":"en","unit":"m"},"location":{"name":"Tongi","country":"Bangladesh","region":"","lat":"23.890","lon":"90.406","timezone_id":"Asia\/Dhaka","localtime":"2024-11-15
@@ -37,12 +36,18 @@ public class WeatherStackService implements IWeatherService {
         // PM","temperature":24,"weather_code":113,"weather_icons":["https:\/\/cdn.worldweatheronline.com\/images\/wsymbols01_png_64\/wsymbol_0008_clear_sky_night.png"],"weather_descriptions":["Clear
         // "],"wind_speed":12,"wind_degree":330,"wind_dir":"NNW","pressure":1011,"precip":0,"humidity":57,"cloudcover":0,"feelslike":25,"uv_index":0,"visibility":10,"is_day":"no"}}
 
-        String location = jsonBody.split("location")[1].split("name")[1].split(":")[1].replace("\"", "").trim();
-        double temperature = Double.parseDouble(
-                jsonBody.split("current")[1].split("temperature")[1].split(":")[1].replace(",", "").trim());
-        String weather = jsonBody.split("current")[1].split("weather_descriptions")[1].split(":")[1].replace("\"", "")
-                .replace("]", "").trim();
+        String location = jsonResponse.split("\"name\":\"")[1].split("\"")[0];
+        double temperature = Double.parseDouble(jsonResponse.split("\"temperature\":")[1].split(",")[0]);
+        String weatherDescription = jsonResponse.split("\"weather_descriptions\":\\[\"")[1].split("\"")[0];
+        String windSpeed = jsonResponse.split("\"wind_speed\":")[1].split(",")[0];
+        String windDirection = jsonResponse.split("\"wind_dir\":\"")[1].split("\"")[0];
 
-        return new WeatherData(temperature, weather, location, "WeatherStack");
+        System.out.println("Location: " + location);
+        System.out.println("Temperature: " + temperature);
+        System.out.println("Weather Description: " + weatherDescription);
+        System.out.println("Wind Speed: " + windSpeed);
+        System.out.println("Wind Direction: " + windDirection);
+
+        return new WeatherData(temperature, weatherDescription, location, "WeatherStack");
     }
 }
