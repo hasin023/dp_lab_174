@@ -1,42 +1,50 @@
 import models.WeatherData;
 import proxy.WeatherServiceProxy;
+import thirdPartyServices.LocationService;
 
 public class App {
     public static void main(String[] args) throws Exception {
         WeatherServiceProxy weatherService = new WeatherServiceProxy();
+        LocationService locationService = new LocationService();
 
         try {
-            WeatherData londonData = weatherService.getWeatherData("Gulshan");
-            londonData.printWeatherDetails();
 
-            WeatherData tokyoData = weatherService.getWeatherData("Uttara");
-            tokyoData.printWeatherDetails();
+            System.out.println(locationService.getCity());
+            System.out.println(locationService.getCountry());
+            System.out.println(locationService.getLat());
+            System.out.println(locationService.getLon());
 
-            WeatherData cachedLondonData = weatherService.getWeatherData("Gulshan");
-            cachedLondonData.printWeatherDetails();
+            // WeatherData londonData = weatherService.getWeatherData("Gulshan");
+            // londonData.printWeatherDetails();
 
-            WeatherData cachedTokyoData = weatherService.getWeatherData("Uttara");
-            cachedTokyoData.printWeatherDetails();
+            // WeatherData tokyoData = weatherService.getWeatherData("Uttara");
+            // tokyoData.printWeatherDetails();
 
-            weatherService.showOpenWeatherRequestCount();
+            // WeatherData cachedLondonData = weatherService.getWeatherData("Gulshan");
+            // cachedLondonData.printWeatherDetails();
 
-            weatherService.resetCache();
+            // WeatherData cachedTokyoData = weatherService.getWeatherData("Uttara");
+            // cachedTokyoData.printWeatherDetails();
 
-            WeatherData newLondonData = weatherService.getWeatherData("Gulshan");
-            newLondonData.printWeatherDetails();
+            // weatherService.showOpenWeatherRequestCount();
 
-            WeatherData newTokyoData = weatherService.getWeatherData("Uttara");
-            newTokyoData.printWeatherDetails();
+            // weatherService.resetCache();
 
-            weatherService.resetCache();
-            weatherService.resetOpenWatherRequestCount();
-            weatherService.showOpenWeatherRequestCount();
+            // WeatherData newLondonData = weatherService.getWeatherData("Gulshan");
+            // newLondonData.printWeatherDetails();
 
-            WeatherData moreLondonData = weatherService.getWeatherData("Gulshan");
-            moreLondonData.printWeatherDetails();
+            // WeatherData newTokyoData = weatherService.getWeatherData("Uttara");
+            // newTokyoData.printWeatherDetails();
 
-            WeatherData moreTokyoData = weatherService.getWeatherData("Uttara");
-            moreTokyoData.printWeatherDetails();
+            // weatherService.resetCache();
+            // weatherService.resetOpenWatherRequestCount();
+            // weatherService.showOpenWeatherRequestCount();
+
+            // WeatherData moreLondonData = weatherService.getWeatherData("Gulshan");
+            // moreLondonData.printWeatherDetails();
+
+            // WeatherData moreTokyoData = weatherService.getWeatherData("Uttara");
+            // moreTokyoData.printWeatherDetails();
 
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
