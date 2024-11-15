@@ -5,10 +5,13 @@ import java.util.Map;
 
 import behaviours.IWeatherService;
 import models.WeatherData;
+import thirdPartyServices.LocationService;
 import thirdPartyServices.OpenWeatherService;
 import thirdPartyServices.WeatherStackService;
 
 public class WeatherServiceProxy {
+
+    private LocationService locationService;
     private IWeatherService openWeatherService;
     private IWeatherService weatherStackService;
     private Map<String, WeatherData> cache; // Location -> WeatherData
@@ -18,12 +21,15 @@ public class WeatherServiceProxy {
     private int openWeatherRequestCount = 0;
 
     public WeatherServiceProxy() {
+        this.locationService = new LocationService();
         this.openWeatherService = new OpenWeatherService();
         this.weatherStackService = new WeatherStackService();
         this.cache = new HashMap<>();
     }
 
-    public WeatherData getWeatherData(String location) throws Exception {
+    public WeatherData getWeatherData() throws Exception {
+
+        String location = locationService.getCity();
         WeatherData cachedData = cache.get(location);
 
         if (cachedData != null && isCacheValid(cachedData)) {
