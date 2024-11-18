@@ -1,55 +1,62 @@
 package proxy;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import behaviours.IWeatherService;
-import models.WeatherData;
-import services.OpenWeatherService;
-import services.WeatherStackService;
+import behaviours.*;
+import models.*;
+import services.*;
 
 public class WeatherServiceProxy {
-
-    private IWeatherService openWeatherService;
-    private IWeatherService weatherStackService;
-    private Map<String, WeatherData> cache; // Location -> WeatherData
-
-    // private final long CACHE_DURATION = 600000; // 10 minutes
+    private List<IWeatherService> weatherServices;
+    private Map<String, CachedWeatherData> cache;
+    private final long CACHE_DURATION = 600000;
 
     public WeatherServiceProxy() {
-        this.openWeatherService = new OpenWeatherService();
-        this.weatherStackService = new WeatherStackService();
+        this.weatherServices = new ArrayList<>();
+        this.weatherServices.add(new OpenWeatherService());
+        this.weatherServices.add(new WeatherStackService());
+
         this.cache = new HashMap<>();
     }
 
-    public WeatherData getWeatherData() throws Exception {
-
-        // WeatherData cachedData = cache.get();
-
-        // if (cachedData != null && isCacheValid(cachedData)) {
-        // cachedData.updateSource("Cached Data");
-        // return cachedData;
-        // }
-
-        CompletableFuture<WeatherData> data;
-        try {
-            data = openWeatherService.getWeatherData();
-            // cache.put(location, data);
-        } catch (Exception e) {
-            data = weatherStackService.getWeatherData();
-            // cache.put(location, data);
-        }
-
-        return data.get();
+    public void addWeatherService(IWeatherService service) {
+        weatherServices.add(service);
     }
 
-    // private boolean isCacheValid(WeatherData data) {
-    // return System.currentTimeMillis() - data.getTimestamp() < CACHE_DURATION;
-    // }
+    public WeatherData getWeatherData() throws Exception {
+        for (CachedWeatherData cachedData : cache.values()) {
+            if (isCacheValid(cachedData)) {
+                cachedData.weatherData.updateSource("Cached Data");
+                return cachedData.weatherData;
+            }
+        }
+
+        for (IWeatherService service : weatherServices) {
+            try {
+                CompletableFuture<WeatherData> dataFuture = service.getWeatherData();
+                WeatherData weatherData = dataFuture.get();
+
+                cache.put(weatherData.getLocation(),
+                        new CachedWeatherData(weatherData, System.currentTimeMillis()));
+
+                return weatherData;
+            } catch (Exception e) {
+                System.out.println("Service failed: " + service.getClass().getSimpleName());
+            }
+        }
+
+        throw new Exception("All weather services failed");
+    }
+
+    private boolean isCacheValid(CachedWeatherData cachedData) {
+        return System.currentTimeMillis() - cachedData.timestamp < CACHE_DURATION;
+    }
 
     public void resetCache() {
-        System.out.println("Resetting cache...");
         cache.clear();
     }
 }

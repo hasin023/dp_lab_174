@@ -6,8 +6,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
-import behaviours.ILocationService;
-import models.LocationData;
+import behaviours.*;
+import models.*;
 
 public class LocationService implements ILocationService {
     private static final String IPIFY_URL = "https://api.ipify.org/";

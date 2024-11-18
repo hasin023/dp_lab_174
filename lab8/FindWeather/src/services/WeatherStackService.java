@@ -1,47 +1,24 @@
 package services;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.text.MessageFormat;
-import java.util.concurrent.CompletableFuture;
 
-import behaviours.IWeatherService;
-import models.LocationData;
-import models.WeatherData;
+import abstracts.*;
+import models.*;
 
-public class WeatherStackService implements IWeatherService {
-        private final String WEATHERSTACK_API_KEY = "b241366e762063ba924efb466bb650d9";
-        private LocationService locationService = new LocationService();
-        private final HttpClient httpClient;
+public class WeatherStackService extends AbstractWeatherService {
+        private static final String WEATHERSTACK_API_KEY = "b241366e762063ba924efb466bb650d9";
+        private static final String API_URL = "http://api.weatherstack.com/current?access_key={0}&query={1}&units=m";
 
         public WeatherStackService() {
-                this.httpClient = HttpClient.newHttpClient();
+                super(WEATHERSTACK_API_KEY);
         }
 
         @Override
-        public CompletableFuture<WeatherData> getWeatherData() throws Exception {
-                CompletableFuture<LocationData> locationFuture = locationService.getLocationData();
-                LocationData locationData = locationFuture.get();
-
-                String REQ_URL = MessageFormat.format(
-                                "http://api.weatherstack.com/current?access_key={0}&query={1}&units=m",
-                                WEATHERSTACK_API_KEY, locationData.getCity());
-
-                HttpRequest request = HttpRequest.newBuilder()
-                                .GET()
-                                .uri(URI.create(REQ_URL))
-                                .build();
-
-                try {
-                        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-                        return CompletableFuture.completedFuture(parseWeatherStackResponse(response.body()));
-                } catch (Exception e) {
-                        CompletableFuture<WeatherData> future = new CompletableFuture<>();
-                        future.completeExceptionally(e);
-                        return future;
-                }
+        protected String buildRequestUrl(LocationData locationData) {
+                return MessageFormat.format(
+                                API_URL,
+                                apiKey,
+                                locationData.getCity());
         }
 
         // {"request":{"type":"City","query":"Tongi,
@@ -49,7 +26,8 @@ public class WeatherStackService implements IWeatherService {
         // 20:49","localtime_epoch":1731703740,"utc_offset":"6.0"},"current":{"observation_time":"02:49
         // PM","temperature":24,"weather_code":113,"weather_icons":["https:\/\/cdn.worldweatheronline.com\/images\/wsymbols01_png_64\/wsymbol_0008_clear_sky_night.png"],"weather_descriptions":["Clear
         // "],"wind_speed":12,"wind_degree":330,"wind_dir":"NNW","pressure":1011,"precip":0,"humidity":57,"cloudcover":0,"feelslike":25,"uv_index":0,"visibility":10,"is_day":"no"}}
-        public WeatherData parseWeatherStackResponse(String jsonBody) {
+        @Override
+        protected WeatherData parseWeatherResponse(String jsonBody) {
                 String location = jsonBody.split("\"name\":\"")[1].split("\"")[0];
                 double temperature = Double.parseDouble(jsonBody.split("\"temperature\":")[1].split(",")[0]);
                 String weatherDescription = jsonBody.split("\"weather_descriptions\":\\[\"")[1].split("\"")[0];

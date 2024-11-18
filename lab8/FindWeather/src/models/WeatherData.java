@@ -15,6 +15,10 @@ public class WeatherData {
         this.timestamp = System.currentTimeMillis();
     }
 
+    public String getLocation() {
+        return location;
+    }
+
     public long getTimestamp() {
         return timestamp;
     }

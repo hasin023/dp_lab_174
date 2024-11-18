@@ -8,6 +8,9 @@ public class App {
         try {
             WeatherData data = weatherService.getWeatherData();
             data.printWeatherDetails();
+
+            WeatherData data2 = weatherService.getWeatherData();
+            data2.printWeatherDetails();
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
