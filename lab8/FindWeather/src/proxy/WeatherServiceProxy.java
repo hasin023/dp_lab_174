@@ -2,11 +2,12 @@ package proxy;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import behaviours.IWeatherService;
 import models.WeatherData;
-import thirdPartyServices.OpenWeatherService;
-import thirdPartyServices.WeatherStackService;
+import services.OpenWeatherService;
+import services.WeatherStackService;
 
 public class WeatherServiceProxy {
 
@@ -31,17 +32,16 @@ public class WeatherServiceProxy {
         // return cachedData;
         // }
 
-        WeatherData data;
+        CompletableFuture<WeatherData> data;
         try {
             data = openWeatherService.getWeatherData();
             // cache.put(location, data);
-            return data;
         } catch (Exception e) {
             data = weatherStackService.getWeatherData();
             // cache.put(location, data);
         }
 
-        return data;
+        return data.get();
     }
 
     // private boolean isCacheValid(WeatherData data) {

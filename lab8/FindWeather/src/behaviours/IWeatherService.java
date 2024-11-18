@@ -1,7 +1,9 @@
 package behaviours;
 
+import java.util.concurrent.CompletableFuture;
+
 import models.WeatherData;
 
 public interface IWeatherService {
-    WeatherData getWeatherData() throws Exception;
+    CompletableFuture<WeatherData> getWeatherData() throws Exception;
 }
