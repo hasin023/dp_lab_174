@@ -10,9 +10,9 @@ import behaviours.*;
 import models.*;
 
 public class LocationService implements ILocationService {
-    private static final String IPIFY_URL = "https://api.ipify.org/";
-    private static final String GEOLOCATION_URL = "http://ip-api.com/json/";
-    private final HttpClient httpClient;
+    private final String IPIFY_URL = "https://api.ipify.org/";
+    private final String GEOLOCATION_URL = "http://ip-api.com/json/";
+    private HttpClient httpClient;
 
     public LocationService() {
         this.httpClient = HttpClient.newHttpClient();
@@ -42,14 +42,14 @@ public class LocationService implements ILocationService {
                     .uri(URI.create(GEOLOCATION_URL + ip))
                     .build();
 
+            CompletableFuture<LocationData> future = new CompletableFuture<>();
             try {
                 HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-                return CompletableFuture.completedFuture(parseLocationData(response.body()));
+                future.complete(parseLocationData(response.body()));
             } catch (Exception e) {
-                CompletableFuture<LocationData> future = new CompletableFuture<>();
                 future.completeExceptionally(e);
-                return future;
             }
+            return future;
         });
     }
 
