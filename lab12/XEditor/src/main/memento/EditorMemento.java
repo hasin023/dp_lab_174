@@ -1,8 +1,9 @@
 package main.memento;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class EditorMemento {
+public class EditorMemento implements Serializable {
 
     private String content;
     private int cursorPosition;
